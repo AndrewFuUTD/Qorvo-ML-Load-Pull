@@ -146,6 +146,6 @@ def readMDF(fileName):
 
         #store the data frame as a pickled object that can be accessed by unpickling
         #this retains the type information as it was originally defined in the DF
-        pickle.dump(df, open(fileName+'.pick', 'wb'))
+        pickle.dump(df, open(fileName + "\\" + fileName + '.pick', 'wb'))
         #export the data as a csv for easier visulisation in excel
         df.to_csv(fileName + "\\" + fileName + '.csv')

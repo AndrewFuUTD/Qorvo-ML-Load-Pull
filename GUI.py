@@ -3,7 +3,7 @@ from tkinter.constants import CENTER
 from tkinter.ttk import *
 import Test
 import mdfParser
-#import models
+import models
 import os
 
 GUI = tkinter.Tk()
@@ -33,7 +33,7 @@ def runSimulation():
     fileCreatedLabel.place(relx = .5, rely = .4, anchor = CENTER)
 
     Test.makeMDF(fileName)
-    models.makeModel
+    models.makeModel()
 
     
 

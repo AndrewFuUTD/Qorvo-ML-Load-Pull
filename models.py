@@ -2,12 +2,6 @@ import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
-from sklearn.neural_network import MLPRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn import svm
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.ensemble import BaggingRegressor
 from sklearn.preprocessing import PolynomialFeatures
 
 
@@ -15,7 +9,6 @@ def convert(ar):
     for x in range(len(ar)):
         ar[x] = ar[x][0]
     return ar
-
 
 def printML(mod, gridR,gridX,name):
     predictions = []

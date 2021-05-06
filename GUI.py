@@ -11,11 +11,11 @@ GUI.title("Machine Learning for Load Pull Simulations")
 GUI.geometry("300x350")
 GUI.resizable(False, False)
 
-button = tkinter.Button(GUI, text = "Get Max Power", width = 15, height = 5, bg = "blue", fg = "white")
-button.place(relx = .1, rely = .5)
+button = tkinter.ttk.Button(GUI, text = "Get Max Power", width = 20)
+button.place(relx = .25, rely = .5, anchor = CENTER)
 
-button1 = tkinter.Button(GUI, text = "Get Max Efficiency", width = 15, height = 5, bg = "black", fg = "yellow")
-button1.place(relx = .5, rely = .5)
+button1 = tkinter.ttk.Button(GUI, text = "Get Max Efficiency", width = 20)
+button1.place(relx = .75, rely = .5, anchor = CENTER)
 
 w = Entry(GUI, width = 20)
 w.place(relx = .5, rely = .1, anchor = CENTER)
@@ -35,10 +35,8 @@ def runSimulation():
     Test.makeMDF(fileName)
     models.makeModel()
 
-    
 
-
-entryButton = tkinter.Button(GUI, text = "Submit File Name", width = 15, height = 3, bg = "red", fg = "black", command = runSimulation)
+entryButton = tkinter.ttk.Button(GUI, text = "Submit File Name", width = 20, command = runSimulation)
 entryButton.place(relx = .5, rely = .25, anchor = CENTER)
 
 

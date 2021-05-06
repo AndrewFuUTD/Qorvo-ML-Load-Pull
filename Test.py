@@ -1,7 +1,5 @@
 import win32com.client
-import subprocess
 import os
-import numpy as np
 import mdfParser
 
 def makeMDF(fileName):

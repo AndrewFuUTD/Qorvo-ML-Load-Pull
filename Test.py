@@ -4,7 +4,6 @@ import mdfParser
 
 def makeMDF(fileName):
 
-    
     awrde = win32com.client.Dispatch('MWOApp.MWOffice')
     g = awrde.Project.Schematics(1)
     g = awrde.Project.DataFiles(1)

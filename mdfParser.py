@@ -1,9 +1,9 @@
 # Filename:  mdfParser.py
-# Date:      04/01/2020
+# Date:      04/01/2021
 # Author:    Rutvij Shah
 # Email:     rutvij.shah@utdallas.edu
 # Version:   1.3
-# Copyright: 2020, All Rights Reserved
+# Copyright: 2021, All Rights Reserved
 #
 # Written for the senior design project, Load Pull Analysis Team.
 #

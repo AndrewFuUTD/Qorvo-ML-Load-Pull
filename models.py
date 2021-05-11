@@ -11,7 +11,7 @@ def convert(ar):
     return ar
 
 def makeModel(file):
-    df = pd.read_csv(file, usecols = ['gammaTuple','power','harmonic', 'a1','b1','a2','b2',
+    df = pd.read_csv(file + '.csv', usecols = ['gammaTuple','power','harmonic', 'a1','b1','a2','b2',
     'V1','I1','V2','I2','Pin','Pout','Gain','Pdc1', 'Pdc2', 'PAE', 'Load Gamma', 'r', 'x']) 
     #df = df.sample(frac=1,replace = Fals)
     X = df[df['harmonic'] == 1]

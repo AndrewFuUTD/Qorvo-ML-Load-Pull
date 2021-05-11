@@ -7,95 +7,115 @@ import models
 import os
 import numpy as np
 
-poly = None
-effModel = None
-powModel = None
 
-def runSimulation():
-    fileName = fileEntry.get()
-    fileCreatedLabel.place(relx = .5, rely = .23, anchor = CENTER)
-    if not len(fileName):
-        fileCreatedLabel.config(text = "Must have a File Name")
-        return
+class myGUI():
+    def __init__(self):
+        self.poly = None
+        self.effModel = None
+        self.powModel = None
+        self.GUI = tkinter.Tk()
+        self.GUI.title("Machine Learning for Load Pull Simulations")
+        self.GUI.geometry("300x400")
+        self.GUI.resizable(False, False)
 
-    Test.makeMDF(fileName)
-    fileCreatedLabel.config(text = "File Created")
+        self.fileEntry = Entry(self.GUI, width=20)
+        self.fileEntry.bind('<Return>', self.runSimulation)
+        self.fileEntry.place(relx=.5, rely=.05, anchor=CENTER)
+        self.fileCreatedLabel = tkinter.Label(self.GUI)
 
-    powModel, effModel, poly = models.makeModel(fileName + "//" + fileName)
-    
-def predictMax():
-    bestEff, bestEffPoint = models.getMax((effModel, poly))
-    bestPow, bestPowPoint = models.getMax((powModel, poly))
-    
-    #print
+        entryButton = tkinter.ttk.Button(self.GUI, text="Submit File Name", width=20, command=self.runSimulation)
+        entryButton.place(relx=.5, rely=.15, anchor=CENTER)
 
-def predictPoint():
-    predictErrorLabel.place_forget()
-    x = predictx.get()
-    y = predicty.get()
-    try: 
-        float(x)
-        float(y)
-    except:
-        predictErrorLabel.place(relx = .5, rely = .94, anchor = CENTER)
-        return
-    if float(x) < -.8 or float(x) > .8 or float(y) < -.8 or float(y) > .8:
-        predictErrorLabel.place(relx = .5, rely = .94, anchor = CENTER)
-        return
-    X_transform = poly.fit_transform(np.array([[x, y]]))
-    predictEff = effModel.predict(X_transform)
-    predictPow = powModel.predict(X_transform)
-    #print
-    
-def printEffGraph():
-    models.printGraph(effModel)
 
-def printPowGraph():
-    models.printGraph(powModel)
+        self.GUI.mainloop()
 
-GUI = tkinter.Tk()
-GUI.title("Machine Learning for Load Pull Simulations")
-GUI.geometry("300x400")
-GUI.resizable(False, False)
+    def runSimulation(self, a=None):
+        fileName = self.fileEntry.get()
+        self.fileCreatedLabel.place(relx=.5, rely=.23, anchor=CENTER)
+        if not len(fileName):
+            self.fileCreatedLabel.config(text="Must have a File Name")
+            return
 
-fileEntry = Entry(GUI, width = 20)
-fileEntry.place(relx = .5, rely = .05, anchor = CENTER)
+        a = Test.makeMDF(fileName)
+        if not a:
+            return
+        self.fileCreatedLabel.config(text="File Created")
 
-entryButton = tkinter.ttk.Button(GUI, text = "Submit File Name", width = 20, command = runSimulation)
-entryButton.place(relx = .5, rely = .15, anchor = CENTER)
+        self.powModel, self.effModel, self.poly = models.makeModel(fileName + "//" + fileName)
+        self.launchApp()
 
-fileCreatedLabel = tkinter.Label(GUI)
+    def launchApp(self):
 
-showEffGraphButton = tkinter.ttk.Button(GUI, text = "Show Efficiency Graph", command = printEffGraph, width = 20)
-showEffGraphButton.place(relx = .25, rely = .3, anchor = CENTER)
 
-showPowGraphButton = tkinter.ttk.Button(GUI, text = "Show Power Graph", command = printPowGraph, width = 20)
-showPowGraphButton.place(relx = .75, rely = .3, anchor = CENTER)
+        showEffGraphButton = tkinter.ttk.Button(self.GUI, text="Show Efficiency Graph", command=self.printEffGraph, width=20)
+        showEffGraphButton.place(relx=.25, rely=.3, anchor=CENTER)
 
-button = tkinter.ttk.Button(GUI, text = "Get Max Power and Efficiency Points", width = 40, command = predictMax)
-button.place(relx = .5, rely = .45, anchor = CENTER)
+        showPowGraphButton = tkinter.ttk.Button(self.GUI, text="Show Power Graph", command=self.printPowGraph, width=20)
+        showPowGraphButton.place(relx=.75, rely=.3, anchor=CENTER)
 
-predictButton = tkinter.ttk.Button(GUI, text = "Predict Power and Efficiency at Point", width = 40, command = predictPoint)
-predictButton.place(relx = .5, rely = .7, anchor = CENTER)
+        button = tkinter.ttk.Button(self.GUI, text="Get Max Power and Efficiency Points", width=40, command=self.predictMax)
+        button.place(relx=.5, rely=.45, anchor=CENTER)
 
-xlabel = tkinter.Label(GUI, text = "x")
-xlabel.place(relx = .3, rely = .77, anchor = CENTER)
+        predictButton = tkinter.ttk.Button(self.GUI, text="Predict Power and Efficiency at Point", width=40,
+                                           command=self.predictPoint)
+        predictButton.place(relx=.5, rely=.7, anchor=CENTER)
 
-ylabel = tkinter.Label(GUI, text = "y")
-ylabel.place(relx = .7, rely = .77, anchor = CENTER)
+        xlabel = tkinter.Label(self.GUI, text="x")
+        xlabel.place(relx=.3, rely=.77, anchor=CENTER)
 
-predictx = Entry(GUI, width = 10)
-predictx.place(relx = .3, rely = .84, anchor = CENTER)
+        ylabel = tkinter.Label(self.GUI, text="r")
+        ylabel.place(relx=.7, rely=.77, anchor=CENTER)
 
-predicty = Entry(GUI, width = 10)
-predicty.place(relx = .7, rely = .84, anchor = CENTER)
+        self.predictx = Entry(self.GUI, width=10)
+        self.predictx.place(relx=.3, rely=.84, anchor=CENTER)
 
-predictErrorLabel = tkinter.Label(GUI, text = "Invalid inputs (x and y must be -0.8 to 0.8)")
+        self.predicty = Entry(self.GUI, width=10)
+        self.predicty.place(relx=.7, rely=.84, anchor=CENTER)
 
-predictXLabel = tkinter.Label(GUI)
-predictXLabel.place(anchor = CENTER, relx = .25, rely = .93)
+        self.predictErrorLabel = tkinter.Label(self.GUI, text="Invalid inputs (x and y must be -0.8 to 0.8)")
 
-predictYLabel = tkinter.Label(GUI)
-predictYLabel.place(anchor = CENTER, relx = .75, rely = .93)
+        predictXLabel = tkinter.Label(self.GUI)
+        predictXLabel.place(anchor=CENTER, relx=.25, rely=.93)
 
-GUI.mainloop()
+        predictYLabel = tkinter.Label(self.GUI)
+        predictYLabel.place(anchor=CENTER, relx=.75, rely=.93)
+
+    def predictMax(self):
+        bestEff, bestEffPoint = models.getMax((self.effModel, self.poly))
+        bestPow, bestPowPoint = models.getMax((self.powModel, self.poly))
+        print(np.shape(bestEffPoint))
+        self.maxELabel = tkinter.Label(self.GUI, text="Best Efficiency : {:2.1f}% at X={:.3f}, R={:.3f}".format(bestEff, bestEffPoint[0, 0], bestEffPoint[0,1]))
+        self.maxELabel.place(relx=.5, rely = .51, anchor=CENTER)
+        self.maxPLabel = tkinter.Label(self.GUI, text="Best Power : {:.3f}dBm at X={:.3f}, R={:.3f}".format(bestPow, bestPowPoint[0, 0],bestPowPoint[0,1]))
+        self.maxPLabel.place(relx=.5, rely=.57, anchor=CENTER)
+
+    def predictPoint(self):
+        self.predictErrorLabel.place_forget()
+        x = self.predictx.get()
+        y = self.predicty.get()
+        try:
+            float(x)
+            float(y)
+        except:
+            self.predictErrorLabel.place(relx=.5, rely=.94, anchor=CENTER)
+            return
+        if float(x) < -.8 or float(x) > .8 or float(y) < -.8 or float(y) > .8:
+            self.predictErrorLabel.place(relx=.5, rely=.94, anchor=CENTER)
+            return
+        X_transform = self.poly.fit_transform(np.array([[x, y]]))
+        predictEff = self.effModel.predict(X_transform)
+        predictPow = self.powModel.predict(X_transform)
+        print(predictEff, predictPow)
+        self.predictELabel = tkinter.Label(self.GUI, text="Efficiency at point : {:2.1f}%".format(predictEff[0]))
+        self.predictELabel.place(relx=.5, rely = .91, anchor=CENTER)
+        self.predictPLabel = tkinter.Label(self.GUI, text="Power at point : {:2.1f}%".format(predictPow[0]))
+        self.predictPLabel.place(relx=.5, rely=.96, anchor=CENTER)
+
+    def printEffGraph(self):
+        models.printGraph((self.effModel, self.poly), "e")
+
+    def printPowGraph(self):
+        models.printGraph((self.powModel, self.poly), "p")
+
+if __name__ == "__main__":
+    g = myGUI()

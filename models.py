@@ -14,7 +14,7 @@ def convert(ar):
     return ar
 
 
-def makeModel(file):
+def makeModel(file, order=4):
     df = pd.read_csv(file + '.csv', usecols=['gammaTuple', 'power', 'harmonic', 'a1', 'b1', 'a2', 'b2',
                                              'V1', 'I1', 'V2', 'I2', 'Pin', 'Pout', 'Gain', 'Pdc1', 'Pdc2', 'PAE',
                                              'Load Gamma', 'r', 'x'])
@@ -34,7 +34,7 @@ def makeModel(file):
 
     linregPower = LinearRegression()
     linregEfficiency = LinearRegression()
-    poly = PolynomialFeatures(5)
+    poly = PolynomialFeatures(order)
     X_transform = poly.fit_transform(pointsX)
     linregPower.fit(X_transform, powerPoints)
     linregEfficiency.fit(X_transform, efficiencyPoints)
@@ -50,7 +50,7 @@ def printGraph(model, type):
     linreg = model[0]
     poly = model[1]
 
-    space = np.linspace(-.8, .8, 100)
+    space = np.linspace(-.8, .8, 1000)
     gridX, gridR = np.meshgrid(space, space)
 
     predictions = []

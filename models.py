@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 import scipy
-from sympy import *
 
 
 def convert(ar):
@@ -117,7 +116,7 @@ def WtodBm(watts):
     return 10 * np.log10(1000 * watts)
 
 def cartesianToSmith(x, y):
-    
+
     yj = complex(0, y)
     topEquation = 1 + x + yj
     botEquation = 1 - x - yj

@@ -116,3 +116,12 @@ def getMax(model):
 def WtodBm(watts):
     return 10 * np.log10(1000 * watts)
 
+def cartesianToSmith(x, y):
+    
+    yj = complex(0, y)
+    topEquation = 1 + x + yj
+    botEquation = 1 - x - yj
+
+    equation = topEquation/botEquation
+
+    return equation.real, equation.imag

@@ -83,10 +83,11 @@ class myGUI():
     def predictMax(self):
         bestEff, bestEffPoint = models.getMax((self.effModel, self.poly))
         bestPow, bestPowPoint = models.getMax((self.powModel, self.poly))
-        print(np.shape(bestEffPoint))
-        self.maxELabel = tkinter.Label(self.GUI, text="Best Efficiency : {:2.1f}% at X={:.3f}, R={:.3f}".format(bestEff, bestEffPoint[0, 0], bestEffPoint[0,1]))
+        real1, imaginary1 = models.cartesianToSmith(bestEffPoint[0, 0], bestEffPoint[0, 1])
+        real2, imaginary2 = models.cartesianToSmith(bestPowPoint[0, 0], bestPowPoint[0, 1])
+        self.maxELabel = tkinter.Label(self.GUI, text="Best Efficiency : {:2.1f}% at X={:.3f}, R={:.3f}".format(bestEff, real1, imaginary1))
         self.maxELabel.place(relx=.5, rely = .51, anchor=CENTER)
-        self.maxPLabel = tkinter.Label(self.GUI, text="Best Power : {:.3f}dBm at X={:.3f}, R={:.3f}".format(bestPow, bestPowPoint[0, 0],bestPowPoint[0,1]))
+        self.maxPLabel = tkinter.Label(self.GUI, text="Best Power : {:.3f}dBm at X={:.3f}, R={:.3f}".format(bestPow, real2,imaginary2))
         self.maxPLabel.place(relx=.5, rely=.57, anchor=CENTER)
 
     def predictPoint(self):
